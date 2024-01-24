@@ -164,7 +164,7 @@ jobs:
       env:
         CMAKE_BUILD_TYPE: "RelWithDebInfo"
       run: |
-        cmake --install . --config ${{ env.CMAKE_BUILD_TYPE }}
+        cmake --install "build/ci" --config ${{ env.CMAKE_BUILD_TYPE }}
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
