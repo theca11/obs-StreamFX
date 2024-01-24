@@ -151,15 +151,22 @@ jobs:
           -Dlibobs_DIR="${{ github.workspace }}/build/obs/install" \
           -DQt${{ matrix.qt }}_DIR="${{ github.workspace }}/build/qt" \
           -DFFmpeg_DIR="${{ github.workspace }}/build/obsdeps" \
-          -DCURL_DIR="${{ github.workspace }}/build/obsdeps"
+          -DCURL_DIR="${{ github.workspace }}/build/obsdeps" \
+          -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}/install_files"
     - name: "Build: Release"
       shell: bash
       env:
         CMAKE_BUILD_TYPE: "RelWithDebInfo"
       run: |
         cmake --build "build/ci" --config ${{ env.CMAKE_BUILD_TYPE }} --target StreamFX
+    - name: "Build: Install files"
+      shell: bash
+      env:
+        CMAKE_BUILD_TYPE: "RelWithDebInfo"
+      run: |
+        cmake --install . --config ${{ env.CMAKE_BUILD_TYPE }}
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: my-artifact
-        path: ./build/ci
+        path: "${{ github.workspace }}/install_files"
